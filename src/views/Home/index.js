@@ -16,6 +16,12 @@ function App({ navigation }) {
       }}>
         <Text style={styles.txt}>Animation Tabbar</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity style={styles.btna} onPress={() => {
+        navigation.navigate('Login')
+      }}>
+        <Text style={styles.txt}>Animation Login</Text>
+      </TouchableOpacity>
     </View>
   );
 }
