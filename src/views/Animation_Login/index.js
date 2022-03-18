@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, Dimensions,Platform,PixelRatio } from 'react-native';
 import { LinearGradient, LinearTextGradient } from 'expo-linear-gradient';
 import * as Animatable from "react-native-animatable";
 import Animated, {
@@ -24,17 +24,34 @@ const config = {
   duration: 1200,
   easing: Easing.bezier(0.5, 0.01, 0, 1),
 };
-const { width, height } = Dimensions.get('window')
+const { width, height } = Dimensions.get('window');
+
+const headerHeight_Max=Platform.OS=="ios"?350:200;
+const headerHeight_Min=Platform.OS=="ios"?250:150;
+
+const scale = width / 320;
+
+export function normalize(size) {
+  const newSize = size * scale 
+  if (Platform.OS === 'ios') {
+    return Math.round(PixelRatio.roundToNearestPixel(newSize))
+  } else {
+    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2
+  }
+}
+
+const height_ra=Platform.OS=="ios"?60:50;
+
 function App() {
   const [isLogin, setLogin] = useState(false);
-  const anim_HeightImage = useSharedValue(350);
+  const anim_HeightImage = useSharedValue(headerHeight_Max);
   const anim_transparent = useSharedValue(1);
   useEffect(() => {
     if (isLogin) {
-      anim_HeightImage.value = 250
+      anim_HeightImage.value = headerHeight_Min
       anim_transparent.value = 0
     } else {
-      anim_HeightImage.value = 350
+      anim_HeightImage.value = headerHeight_Max
       anim_transparent.value = 1
     }
   }, [isLogin])
@@ -64,11 +81,12 @@ function App() {
     return withTiming(isLogin ? 360 : 0, config);
   });
   const Anim_Item = useAnimatedStyle(() => {
+    const heightItemAnim=headerHeight_Max-(Platform.OS=='ios'?450:250)
     if (isLogin) {
       return {
         transform: [
           {
-            translateY: withTiming(-100, config),
+            translateY: withTiming(heightItemAnim, config),
           },
           {
             translateX: withTiming(150 - width, config),
@@ -95,7 +113,7 @@ function App() {
     return {
       transform: [
         {
-          translateY: withTiming(!isLogin ? 0 : height-250, config),
+          translateY: withTiming(!isLogin ? 0 : height-headerHeight_Min, config),
         },
       ],
     };
@@ -131,12 +149,12 @@ function App() {
 
       <Animated.Image
         source={BG_IMAGE2}
-        style={[{ width: '100%', height: 350 }, image_Header, Anim_Opacity]}
+        style={[{ width: '100%', height: headerHeight_Max }, image_Header, Anim_Opacity]}
       />
       {/* Image BG2 */}
       <Animated.View style={[{
         position: 'absolute', zIndex: 999,
-        left: 20, top: 100,
+        left: 20, top: Platform.OS=="ios"?100: 50,
         height: 100
       }, Anim_OpacityUp, Form_FadeRight]}>
         <Text style={styles.txtTitle}>{"Sales"}</Text>
@@ -144,7 +162,7 @@ function App() {
       </Animated.View>
       <Animated.Image
         source={BG_IMAGE}
-        style={[{ position: "absolute", top: 0, right: 0, left: 0, width: '100%', height: 350 }, image_Header, Anim_OpacityUp]}
+        style={[{ position: "absolute", top: 0, right: 0, left: 0, width: '100%', height: headerHeight_Max }, image_Header, Anim_OpacityUp]}
       />
 
       {/* Image Child rotate */}
@@ -153,8 +171,8 @@ function App() {
         style={[{
           position: 'absolute', zIndex: 999,
 
-          width: 100, height: 100,
-          right: 20, top: 290,
+          width: Platform.OS=="ios"?100:70, height: Platform.OS=="ios"?100:70,
+          right: 20, top: Platform.OS=="ios"?290:170,
           // left: 20, top: 190,
         }, Anim_Item]}
       />
@@ -162,7 +180,7 @@ function App() {
       <View style={{ flex: 1 }} />
       {/* FORM Login */}
       <Animated.View
-        style={[{ height: height - 250, width: '100%', backgroundColor: '#fff', paddingVertical: 50, }, Anim_OpacityUp]}
+        style={[{ height: height - headerHeight_Min, width: '100%', backgroundColor: '#fff', paddingVertical: 50, }, Anim_OpacityUp]}
         entering={ZoomIn.duration(300)}
         exiting={ZoomOut.duration(300)}
       >
@@ -189,7 +207,7 @@ function App() {
         style={
           [{
             position: 'absolute', bottom: 0,
-            height: height - 350, width: '100%',
+            height: height - headerHeight_Max, width: '100%',
             backgroundColor: '#fff', paddingVertical: 50,
           }, Form_Fadeout,Anim_Opacity]
         }
@@ -223,7 +241,7 @@ const Button = ({ title = 'Button', onPress = () => { } }) => {
   return (
 
     <TouchableOpacity
-      style={{ marginHorizontal: 15, height: 60, borderRadius: 100, overflow: 'hidden' }}
+      style={{ marginHorizontal: 15, height: height_ra, borderRadius: 100, overflow: 'hidden' }}
       onPress={onPress}
       activeOpacity={.9}
     >
@@ -233,7 +251,7 @@ const Button = ({ title = 'Button', onPress = () => { } }) => {
         colors={[Colors.primary, Colors.second]}
         style={styles.button}
       >
-        <Text style={{ color: '#fff', fontSize: 18, fontWeight: '500' }}>{title}</Text>
+        <Text style={{ color: '#fff', fontSize: normalize(14), fontWeight: '500' }}>{title}</Text>
 
       </LinearGradient>
     </TouchableOpacity>
@@ -247,7 +265,7 @@ const ButtonOutline = ({ title = 'Button' }) => {
 
     <View style={styles.buttonOutline}>
 
-      <Text style={{ color: Colors.primary, fontSize: 18, fontWeight: '500' }}>{title}</Text>
+      <Text style={{ color: Colors.primary, fontSize: normalize(14), fontWeight: '500' }}>{title}</Text>
 
     </View>
 
@@ -260,12 +278,12 @@ const InputOutline = ({ title = 'Email' }) => {
 
     <View style={{
       justifyContent: 'center',paddingLeft:20,marginBottom:15,
-      marginHorizontal: 15, height: 60,
+      marginHorizontal: 15, height: height_ra,
       borderRadius: 100, overflow: 'hidden',
       borderWidth: 1, borderColor: Colors.primary
     }}>
 
-      <Text style={{ color: "#ccc", fontSize: 18, fontWeight: '500' }}>{title}</Text>
+      <Text style={{ color: "#ccc", fontSize: normalize(12), fontWeight: '500' }}>{title}</Text>
 
     </View>
 
@@ -277,17 +295,17 @@ const styles = StyleSheet.create({
   button: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   buttonOutline: {
     justifyContent: 'center', alignItems: 'center',
-    marginHorizontal: 15, height: 60,
+    marginHorizontal: 15, height: height_ra,
     borderRadius: 100, overflow: 'hidden',
     borderWidth: 1, borderColor: Colors.primary
   },
   groupRight: {
     position: 'absolute', zIndex: 999,
-    right: 20, top: 170,
+    right: 20, top: Platform.OS=="ios"?170:100,
     height: 100
   },
 
-  txtTitle: { color: Colors.primary, fontSize: 32, fontWeight: 'bold' },
-  txtSubTitle: { color: Colors.primary, fontSize: 16, fontWeight: '500', textAlign: 'center' }
+  txtTitle: { color: Colors.primary, fontSize:normalize(22), fontWeight: 'bold' },
+  txtSubTitle: { color: Colors.primary, fontSize: normalize(12), fontWeight: '500', textAlign: 'center' }
 })
 export default App;
