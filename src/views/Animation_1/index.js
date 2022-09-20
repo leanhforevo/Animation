@@ -1,6 +1,13 @@
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState, useRef } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image, Platform } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  Platform,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as Animatable from "react-native-animatable";
 import Animated, {
@@ -12,54 +19,54 @@ import Animated, {
   ZoomOut,
 } from "react-native-reanimated";
 
-const headerHeight = Platform.OS == 'ios' ? 22 : 0;
-const tabbarHeight = headerHeight + 50
+const headerHeight = Platform.OS == "ios" ? 22 : 0;
+const tabbarHeight = headerHeight + 50;
 const colorPrimary = "rgb(42,100,241)";
 const colorError = "rgb(235,81,71)";
-const sampleData = [{
-  logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/BMW_logo_%28gray%29.svg/2048px-BMW_logo_%28gray%29.svg.png",
-  title: "BMW",
-  amount: "20,000 ",
-  date: "22/2/2222",
-  status: "Connect",
-},
-{
-  logo: "https://gmolsolutions.com/wp-content/uploads/2020/06/image-43.png",
-  title: "Free Dom",
-  amount: "15,795",
-  date: "1/3/2002",
-  status: "Recive",
-},
-{
-  logo: "https://img.etimg.com/thumb/msid-59738997,width-640,resizemode-4,imgsize-21421/nike.jpg",
-  title: "Nike",
-  amount: "185 ",
-  date: "04/05/1999",
-  status: "connect",
-},
-{
-  logo: "https://designs.vn/wp-content/images/09-08-2013/logo_lagi_8_resize.JPG",
-  title: "StarBuck",
-  amount: "20,000 ",
-  date: "24/6/1999",
-  status: "connect",
-},
-{
-  logo: "https://cdn.thukyluat.vn/nhch-images//CauHoi_Hinh/9eb6abaa-8cda-456c-ad66-26ba4da23ffe.jpg",
-  title: "Nokey",
-  amount: "18,250 ",
-  date: "22/2/2432",
-  status: "connect",
-}
-
+const sampleData = [
+  {
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/BMW_logo_%28gray%29.svg/2048px-BMW_logo_%28gray%29.svg.png",
+    title: "BMW",
+    amount: "20,000 ",
+    date: "22/2/2222",
+    status: "Connect",
+  },
+  {
+    logo: "https://gmolsolutions.com/wp-content/uploads/2020/06/image-43.png",
+    title: "Free Dom",
+    amount: "15,795",
+    date: "1/3/2002",
+    status: "Recive",
+  },
+  {
+    logo: "https://img.etimg.com/thumb/msid-59738997,width-640,resizemode-4,imgsize-21421/nike.jpg",
+    title: "Nike",
+    amount: "185 ",
+    date: "04/05/1999",
+    status: "connect",
+  },
+  {
+    logo: "https://designs.vn/wp-content/images/09-08-2013/logo_lagi_8_resize.JPG",
+    title: "StarBuck",
+    amount: "20,000 ",
+    date: "24/6/1999",
+    status: "connect",
+  },
+  {
+    logo: "https://cdn.thukyluat.vn/nhch-images//CauHoi_Hinh/9eb6abaa-8cda-456c-ad66-26ba4da23ffe.jpg",
+    title: "Nokey",
+    amount: "18,250 ",
+    date: "22/2/2432",
+    status: "connect",
+  },
 ];
 const arrTabbar = [
   "medical-outline",
   "nuclear-outline",
   "person-circle-outline",
   "options-outline",
-  "settings-outline"
-]
+  "settings-outline",
+];
 function App() {
   const [isShowDetail, setShowDetail] = useState(null);
   const [selected, setSelected] = useState(null);
@@ -78,7 +85,7 @@ function App() {
     offset.value = -20; //Math.random()
     setShowDetail(false);
     randomWidth.value = 150;
-    animTabbar.value = -100
+    animTabbar.value = -100;
     animMenu.value = 80;
   };
 
@@ -86,7 +93,7 @@ function App() {
     if (!isShowDetail) {
       setShowDetail(true);
       randomWidth.value = 0;
-      animTabbar.value = 0
+      animTabbar.value = 0;
       animMenu.value = -50;
       setSelected(null);
     }
@@ -118,7 +125,6 @@ function App() {
   const stylesTabbar = useAnimatedStyle(() => {
     return {
       bottom: withTiming(animTabbar.value, {
-
         duration: 600,
       }),
     };
@@ -139,26 +145,12 @@ function App() {
         ]}
       />
 
-      <Animated.View
-        style={[
-          styles.menu1,
-          stylesBTNMenu1,
-        ]}
-      ><Ionicons
-          name="chatbubble-ellipses-outline"
-          size={22}
-          color={'#fff'}
-        /></Animated.View>
-      <Animated.View
-        style={[
-          styles.menu2,
-          stylesBTNMenu2,
-        ]}
-      ><Ionicons
-          name="people-outline"
-          size={22}
-          color={'#fff'}
-        /></Animated.View>
+      <Animated.View style={[styles.menu1, stylesBTNMenu1]}>
+        <Ionicons name="chatbubble-ellipses-outline" size={22} color={"#fff"} />
+      </Animated.View>
+      <Animated.View style={[styles.menu2, stylesBTNMenu2]}>
+        <Ionicons name="people-outline" size={22} color={"#fff"} />
+      </Animated.View>
       <StatusBar style="auto" />
       <HeaderItem isShowDetail={isShowDetail} onBack={_evtBack} />
 
@@ -186,16 +178,39 @@ function App() {
           }}
           entering={ZoomIn.duration(300).delay(300)}
         >
-          <View style={{ paddingHorizontal: 15, height: 90, flexDirection: 'row', borderBottomWidth: StyleSheet.hairlineWidth, borderColor: 'gray' }}>
-            <View style={{ flex: 1, justifyContent: 'space-around', paddingVertical: 5, }}>
+          <View
+            style={{
+              paddingHorizontal: 15,
+              height: 90,
+              flexDirection: "row",
+              borderBottomWidth: StyleSheet.hairlineWidth,
+              borderColor: "gray",
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "space-around",
+                paddingVertical: 5,
+              }}
+            >
               <Text style={styles.txtPlaceHolder}>DH #1293753873</Text>
               <Text style={styles.txtBold}>ACB Bank</Text>
               <Text style={styles.txtPlaceHolder}>alex Kitahorie</Text>
             </View>
-            <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'flex-end', paddingVertical: 5, }}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "space-around",
+                alignItems: "flex-end",
+                paddingVertical: 5,
+              }}
+            >
               <Text style={styles.txtPlaceHolder}>21/02/2014 18:06</Text>
               <Text style={styles.txtBold}>Incomming</Text>
-              <Text numberOfLines={1} style={styles.txtPlaceHolder}>£37 Global Copyright Service - Get protected in 5 minutes.</Text>
+              <Text numberOfLines={1} style={styles.txtPlaceHolder}>
+                £37 Global Copyright Service - Get protected in 5 minutes.
+              </Text>
             </View>
           </View>
           {sampleData.map((item, index) => {
@@ -213,48 +228,58 @@ function App() {
           })}
         </Animated.View>
       ) : null}
-      <Animated.View style={[
-        {
-          width: '100%', height: tabbarHeight, bottom: 0,
-          position: 'absolute', borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: 'gray',
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
+      <Animated.View
+        style={[
+          {
+            width: "100%",
+            height: tabbarHeight,
+            bottom: 0,
+            position: "absolute",
+            borderTopWidth: StyleSheet.hairlineWidth,
+            borderTopColor: "gray",
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+
+            elevation: 5,
+            backgroundColor: "#fff",
+            overflow: "hidden",
           },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-
-          elevation: 5,
-          backgroundColor: '#fff',
-          overflow: 'hidden'
-        },
-        stylesTabbar
-      ]
-      }>
-        <View style={{ marginBottom: headerHeight, flex: 1, flexDirection: 'row' }}>
-
+          stylesTabbar,
+        ]}
+      >
+        <View
+          style={{ marginBottom: headerHeight, flex: 1, flexDirection: "row" }}
+        >
           {arrTabbar.map((e, i) => {
-            return <TouchableOpacity
-              key={`itemTab${i}`}
-              style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-              onPress={() => { alert(e) }}
-            >
-              <View style={styles.containerIcon}>
-                <Ionicons
-                  name={e}
-                  size={22}
-                  color={colorPrimary}
-                />
-              </View>
-            </TouchableOpacity>
+            return (
+              <TouchableOpacity
+                key={`itemTab${i}`}
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onPress={() => {
+                  alert(e);
+                }}
+              >
+                <View style={styles.containerIcon}>
+                  <Ionicons name={e} size={22} color={colorPrimary} />
+                </View>
+              </TouchableOpacity>
+            );
           })}
         </View>
       </Animated.View>
     </View>
   );
 }
-const ItemDetail = ({ onPress = () => { }, index, selected, data = {} }) => {
+const ItemDetail = ({ onPress = () => {}, index, selected, data = {} }) => {
   return (
     <Animated.View
       style={{
@@ -262,31 +287,41 @@ const ItemDetail = ({ onPress = () => { }, index, selected, data = {} }) => {
         marginTop: 5,
         borderRadius: 8,
         backgroundColor: "#fff",
-        alignItems: 'center',
-        flexDirection: 'row',
+        alignItems: "center",
+        flexDirection: "row",
       }}
-      entering={ZoomIn.duration(300 + (index * 50)).delay(300)}
-      exiting={ZoomOut.duration(300 - (index * 50))}
+      entering={ZoomIn.duration(300 + index * 50).delay(300)}
+      exiting={ZoomOut.duration(300 - index * 50)}
     >
-      <View style={{ flex: 1, justifyContent: 'space-around', paddingVertical: 5, }}>
-        <Text numberOfLines={2} style={styles.txtNormal}>React Native Animation | Examples for Animating in React NativeReact Native Animation | Examples for Animating in React Native</Text>
-        <Text numberOfLines={1} style={styles.txtPlaceHolder}>React Native Animation Using Hooks: Floating Heads – Full-Stack FeedReact Native Animation Using Hooks</Text>
+      <View
+        style={{ flex: 1, justifyContent: "space-around", paddingVertical: 5 }}
+      >
+        <Text numberOfLines={2} style={styles.txtNormal}>
+          React Native Animation | Examples for Animating in React NativeReact
+          Native Animation | Examples for Animating in React Native
+        </Text>
+        <Text numberOfLines={1} style={styles.txtPlaceHolder}>
+          React Native Animation Using Hooks: Floating Heads – Full-Stack
+          FeedReact Native Animation Using Hooks
+        </Text>
       </View>
-      <View style={{ flex: 1, justifyContent: 'space-around', alignItems: 'flex-end', paddingVertical: 5, }}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "space-around",
+          alignItems: "flex-end",
+          paddingVertical: 5,
+        }}
+      >
         <Text style={styles.txtBold}>$ 178</Text>
-
       </View>
       <View style={styles.containerIcon}>
-        <Ionicons
-          name="chevron-forward-outline"
-          size={30}
-          color={'gray'}
-        />
+        <Ionicons name="chevron-forward-outline" size={30} color={"gray"} />
       </View>
     </Animated.View>
   );
 };
-const ItemList = ({ onPress = () => { }, index, selected, data = {} }) => {
+const ItemList = ({ onPress = () => {}, index, selected, data = {} }) => {
   const [itemPosition, setitemPosition] = useState({});
 
   const offset = useSharedValue(0);
@@ -353,53 +388,67 @@ const ItemList = ({ onPress = () => { }, index, selected, data = {} }) => {
       style={[styles.containerItem, animatedStyles, scaleStyles]}
     >
       <TouchableOpacity
-        style={{ flex: 1, }}
+        style={{ flex: 1 }}
         activeOpacity={0.9}
         onPress={() => {
           if (onPress && !selected && selected != 0) {
-            onPress()
+            onPress();
           }
         }}
       >
-        <View style={{ flexDirection: 'row', padding: 10 }}>
+        <View style={{ flexDirection: "row", padding: 10 }}>
           <Image
             source={{ uri: data?.logo }}
             style={{ width: 50, height: 50, borderRadius: 25 }}
-            resizeMode={'cover'}
+            resizeMode={"cover"}
           />
-          <View style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 15 }}>
-            <Text style={{ fontSize: 18, fontWeight: "500" }}>{data?.title}</Text>
+          <View
+            style={{ flex: 1, justifyContent: "center", paddingHorizontal: 15 }}
+          >
+            <Text style={{ fontSize: 18, fontWeight: "500" }}>
+              {data?.title}
+            </Text>
           </View>
-          <View style={{ width: 50, height: 50, justifyContent: 'center', alignItems: 'center' }}>
-            <Ionicons
-              name="download-outline"
-              size={25}
-              color={colorPrimary}
-            />
+          <View
+            style={{
+              width: 50,
+              height: 50,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Ionicons name="download-outline" size={25} color={colorPrimary} />
           </View>
         </View>
-        <View style={{ flex: 1, flexDirection: 'row', paddingHorizontal: 15, paddingBottom: 5 }}>
-
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            paddingHorizontal: 15,
+            paddingBottom: 5,
+          }}
+        >
           <View style={{ flex: 1, justifyContent: "space-around" }}>
             <Text style={styles.txtPlaceHolder}>{"Amount"}</Text>
             <Text style={styles.txtBold}>$ {data?.amount}</Text>
           </View>
           <View style={{ flex: 1, justifyContent: "space-around" }}>
             <Text style={styles.txtPlaceHolder}>{"Date"}</Text>
-            <Text style={{ fontSize: 16, }}>{data?.date}</Text>
+            <Text style={{ fontSize: 16 }}>{data?.date}</Text>
           </View>
           <View style={{ flex: 1, justifyContent: "space-around" }}>
             <Text style={styles.txtPlaceHolder}>{"Status"}</Text>
-            <Text style={{ fontSize: 18, fontWeight: "500" }}>{data?.status}</Text>
+            <Text style={{ fontSize: 18, fontWeight: "500" }}>
+              {data?.status}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
-
     </Animated.View>
   );
 };
 
-const HeaderItem = ({ isShowDetail = null, onBack = () => { } }) => {
+const HeaderItem = ({ isShowDetail = null, onBack = () => {} }) => {
   const refTitle = useRef(null);
   const refOptions = useRef(null);
   const refBTNBack = useRef(null);
@@ -472,7 +521,7 @@ const HeaderItem = ({ isShowDetail = null, onBack = () => { } }) => {
         style={{
           position: "absolute",
           top: headerHeight + 22,
-          width: '100%',
+          width: "100%",
           height: 50,
           justifyContent: "center",
           alignItems: "center",
@@ -506,7 +555,6 @@ const HeaderItem = ({ isShowDetail = null, onBack = () => { } }) => {
           <View style={styles.containerIcon}>
             <Ionicons name="paw-outline" size={32} color={"#fff"} />
           </View>
-
         </TouchableOpacity>
       </Animatable.View>
     </View>
@@ -541,9 +589,9 @@ const styles = StyleSheet.create({
 
     elevation: 5,
   },
-  txtPlaceHolder: { fontSize: 15, fontWeight: "500", color: 'gray' },
+  txtPlaceHolder: { fontSize: 15, fontWeight: "500", color: "gray" },
   txtBold: { fontSize: 18, fontWeight: "bold" },
-  txtNormal: { fontSize: 16, },
+  txtNormal: { fontSize: 16 },
 
   menu1: {
     position: "absolute",
@@ -551,8 +599,12 @@ const styles = StyleSheet.create({
     bottom: -50,
     left: 120,
     right: 0,
-    height: 50, width: 50, backgroundColor: colorError,
-    borderRadius: 25, justifyContent: 'center', alignItems: 'center'
+    height: 50,
+    width: 50,
+    backgroundColor: colorError,
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
   },
   menu2: {
     position: "absolute",
@@ -560,7 +612,11 @@ const styles = StyleSheet.create({
     bottom: -50,
     left: 250,
     right: 0,
-    height: 50, width: 50, backgroundColor: colorPrimary,
-    borderRadius: 25, justifyContent: 'center', alignItems: 'center'
-  }
+    height: 50,
+    width: 50,
+    backgroundColor: colorPrimary,
+    borderRadius: 25,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
