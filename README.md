@@ -1,4 +1,4 @@
 # Animation
 ## `Template` example
 
-![Leanhforevo](https://im.ezgif.com/tmp/ezgif-1-e45946b0ef.gif)
+![Leanhforevo](https://raw.githubusercontent.com/leanhforevo/Animation/main/ezgif-1-6c561ff10e.gif)
