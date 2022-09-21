@@ -2,31 +2,65 @@ import * as React from "react";
 import {
   StyleSheet,
   Dimensions,
+  SafeAreaView,
   View,
+  Text,
   Platform,
   TouchableOpacity,
+  LayoutAnimation,
+  Animated as Animated2,
+  UIManager,
 } from "react-native";
-import Svg, { Path } from "react-native-svg";
+import Svg, { Path, PathProps, Rect } from "react-native-svg";
+import Slider from "@react-native-community/slider";
+import * as shape from "d3-shape";
 
 import Animated, {
   useSharedValue,
+  useDerivedValue,
+  useAnimatedProps,
   withTiming,
   useAnimatedStyle,
   interpolate,
 } from "react-native-reanimated";
-import AntDesign from "@expo/vector-icons/AntDesign";
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 const { width } = Dimensions.get("window");
 
 const height = 64;
 
+const tabWidth = width / 4;
 const configAnimation = { duration: 350 };
 
+const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 const AnimatedPath = Animated.createAnimatedComponent(Path);
 const Test = () => {
+  // if (UIManager.setLayoutAnimationEnabledExperimental) {
+  //   UIManager.setLayoutAnimationEnabledExperimental(true);
+  // }
   const [tabSelected, setTabSelected] = React.useState(0);
 
+  const [slider, setSlidder] = React.useState(0);
+  const [slider2, setSlidder2] = React.useState(0);
   const anim_1 = useSharedValue(205);
+
+  const left = shape
+    .line()
+    .x((d) => d.x)
+    .y((d) => d.y)([
+      { x: 0, y: 0 },
+      { x: width, y: 0 },
+    ]);
+  const right = shape
+    .line()
+    .x((d) => d.x)
+    .y((d) => d.y)([
+      { x: width + tabWidth, y: 0 },
+      { x: width * 2, y: 0 },
+      { x: width * 2, y: height },
+      { x: 0, y: height },
+      { x: 0, y: 0 },
+    ]);
 
   const rounded = Platform.OS == "ios" ? 20 : 10;
 
@@ -36,8 +70,50 @@ const Test = () => {
     widthOfTab * tabSelected - (width - widthOfTab) + 4 + rounded;
 
   React.useEffect(() => {
-    anim_1.value = 198 + caculatePositionTab - 50;
-  }, [tabSelected]);
+    anim_1.value = 198 + caculatePositionTab - 50 - slider;
+  }, [slider, tabSelected, slider2]);
+
+  const data = [
+    { x: width + caculatePositionTab - rounded, y: 0 },
+    { x: width - rounded + caculatePositionTab - 40, y: 0 },
+    { x: width + rounded + caculatePositionTab - 40, y: 0 },
+
+    {
+      x: width + 55 - height / 2 + caculatePositionTab - 15,
+      y: height / 2 + 16 - 2 - slider2,
+    },
+
+    {
+      x: width + tabWidth - height / 2 + caculatePositionTab - 20,
+      y: height - 20 + 16 - 10 - slider2,
+    },
+    { x: width + tabWidth - rounded + caculatePositionTab, y: 0 },
+    { x: width + tabWidth + rounded + caculatePositionTab, y: 0 },
+  ];
+  const tab = shape
+    .line()
+    .x((d) => d.x)
+    .y((d) => d.y)
+    .curve(shape.curveBasis)(data);
+
+  const animatedProps = useAnimatedProps(() => {
+    return {
+      d: `${right} ${left} ${tab}`,
+    };
+  });
+
+  // const d = `${right} ${left} ${tab}`;
+
+  const caculatePositionTab1111 = useAnimatedStyle(() => {
+    const caculatePositionTab11112 = interpolate(
+      anim_1.value - 200,
+      [-342, 0],
+      [0, 75]
+    );
+    return {
+      borderRadius: withTiming(caculatePositionTab11112, configAnimation),
+    };
+  });
 
   const fixedTabSample = [
     `M517.5,0L828,0L828,64L0,64L0,0 M0,0L414,0 M86.80000000000001,0L80.13333333333334,0C73.46666666666668,0,60.13333333333335,0,60.13333333333335,0C60.13333333333335,0,73.46666666666668,0,84.80000000000001,7.666666666666667C96.13333333333334,15.333333333333334,105.46666666666668,30.666666666666668,117.38333333333333,39C129.3,47.333333333333336,143.8,48.666666666666664,156.38333333333333,41C168.96666666666667,33.333333333333336,179.63333333333335,16.666666666666668,191.63333333333333,8.333333333333334C203.63333333333335,0,216.9666666666667,0,223.63333333333333,0L230.3,0`,
@@ -48,6 +124,7 @@ const Test = () => {
   ];
   const animatedProps2 = interpolate(tabSelected, [0, 5], [-160, 160]);
 
+
   const DotPosition = useSharedValue(0);
   const Dot_Animation = useAnimatedStyle(() => {
     const animatedValueX = interpolate(
@@ -56,7 +133,7 @@ const Test = () => {
       [-130, width - 152]
     );
 
-    const animatedOpacity = interpolate(DotPosition.value, [0, 100], [1, 0]);
+    const animatedOpacity = interpolate(DotPosition.value, [0, 200], [1, 0]);
     return {
       opacity: withTiming(animatedOpacity, configAnimation),
       transform: [
@@ -69,25 +146,18 @@ const Test = () => {
       ],
     };
   });
-  const Icon_Animation = (index) =>
-    useAnimatedStyle(() => {
-      const animatedOpacity = interpolate(
-        DotPosition.value,
-        [0, 200],
-        [0, -30]
-      );
-      return {
-        opacity: withTiming(tabSelected != index ? 1 : 0, configAnimation),
-        transform: [
-          {
-            translateY: withTiming(
-              tabSelected == index ? animatedOpacity : 0,
-              configAnimation
-            ),
-          },
-        ],
-      };
-    });
+  const Icon_Animation = (index) => useAnimatedStyle(() => {
+    const animatedOpacity = interpolate(DotPosition.value, [0, 200], [0, -30]);
+    return {
+      opacity: withTiming(tabSelected != index ? 1 : 0, configAnimation),
+      transform: [
+        {
+          translateY: withTiming(tabSelected == index ? animatedOpacity : 0, configAnimation),
+        },
+      ],
+    };
+
+  });
 
   const SVG_TabAnimation = useAnimatedStyle(() => {
     const TabPosition = interpolate(
@@ -106,13 +176,13 @@ const Test = () => {
     };
   });
 
-  const iconTab = ["home", "barschart", "staro", "mail", "bars"];
+  const iconTab = ["home", "barschart", "staro", "mail", "bars"]
   return (
     <View style={{ flex: 1, backgroundColor: "rgb(96,208,225)" }}>
       <View style={{ flex: 1 }} />
       <View style={{}}>
         <View style={{ height }}>
-          <Animated.View style={[styles.circalButton, Dot_Animation]}>
+          <Animated.View style={[styles.circalButton, Dot_Animation]} >
             <AntDesign name={iconTab[tabSelected]} size={24} color="black" />
           </Animated.View>
 
@@ -137,18 +207,29 @@ const Test = () => {
                     },
                   ],
                 },
+                // Form_FadeLeft
               ]}
               width={width * 4}
               {...{ height }}
             >
               <AnimatedPath d={fixedTabSample[3]} fill="white" />
+              {/* <AnimatedPath
+              //{...{ d }} 
+              animatedProps={animatedProps}
+              // d={fixedTabSample[tabSelected]}
+              fill="white" /> */}
+
+              {/* <AnimatedPath
+            d={'M40,40L33,60L60,60L65,40Z'}
+            stroke="blue"
+          /> */}
             </Svg>
           </Animated.View>
 
           <View
             style={{
               width: "100%",
-              height: "100%",
+              height: '100%',
               marginTop: 10,
               flexDirection: "row",
               position: "absolute",
@@ -162,6 +243,7 @@ const Test = () => {
                     {
                       width: width / arrTab.length,
                       height: 50,
+                      // backgroundColor: 'pink',
                       justifyContent: "center",
                       alignItems: "center",
                     },
@@ -171,20 +253,19 @@ const Test = () => {
                     DotPosition.value = 200;
                   }}
                 >
-                  <Animated.View
-                    style={[
-                      { zIndex: 9999, position: "absolute" },
-                      Icon_Animation(index),
-                    ]}
-                  >
+
+                  <Animated.View style={[{ zIndex: 9999, position: 'absolute' }, Icon_Animation(index)]}>
                     <AntDesign name={iconTab[index]} size={24} color="black" />
                   </Animated.View>
+
+
                 </TouchableOpacity>
               );
             })}
           </View>
         </View>
-        <View style={{ width: "100%", height: 22, backgroundColor: "#fff" }} />
+        <View style={{ width: '100%', height: 22, backgroundColor: '#fff' }} />
+
       </View>
     </View>
   );
