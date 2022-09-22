@@ -36,71 +36,72 @@ export default function App() {
     setData([...caculateSize]);
     setTurn("x");
   };
- const checkWin = (data,turnCheck) => {
-      const lengArr = data.length
-      let dataWin = {
-        diagonal: 0,
-        diagonal2: 0,
-        row: [],
-        col: []
-      };
-      for (let k = 0; k < lengArr; k++) {
-        if (data[k][lengArr - k - 1] == turnCheck) {
-          dataWin.diagonal++;
-        } else if (data[k][lengArr - k - 1] == turn && dataWin.diagonal < sizeWin) {
-          dataWin.diagonal = 0
-         
-        }
-
-
-        if (data[k][k] == turnCheck) {
-          dataWin.diagonal2++;
-        } else if (data[k][k] == turn && dataWin.diagonal2 < sizeWin) {
-          dataWin.diagonal2 = 0
-        }
-        //check row
-        let countRow = 0
-        for (let j = 0; j < lengArr; j++) {
-          if (data[k][j] == turnCheck) {
-            countRow++;
-          } else if (data[k][j] == turn && countRow < sizeWin) {
-            countRow = 0
-          }
-        }
-        dataWin.row[k] = countRow;
-        // check col
-        let countCol = 0
-        for (let j = 0; j < lengArr; j++) {
-          if (data[j][k] == turnCheck) {
-            countCol++;
-          } else if (data[j][k] == turn && countCol < sizeWin) {
-            countCol = 0
-          }
-        }
-        dataWin.col[k] = countCol;
+  const checkWin = (data, turnCheck) => {
+    const lengArr = data.length;
+    let dataWin = {
+      diagonal: 0,
+      diagonal2: 0,
+      row: [],
+      col: [],
+    };
+    for (let k = 0; k < lengArr; k++) {
+      if (data[k][lengArr - k - 1] == turnCheck) {
+        dataWin.diagonal++;
+      } else if (
+        data[k][lengArr - k - 1] == turn &&
+        dataWin.diagonal < sizeWin
+      ) {
+        dataWin.diagonal = 0;
       }
 
-      return dataWin;
+      if (data[k][k] == turnCheck) {
+        dataWin.diagonal2++;
+      } else if (data[k][k] == turn && dataWin.diagonal2 < sizeWin) {
+        dataWin.diagonal2 = 0;
+      }
+      //check row
+      let countRow = 0;
+      for (let j = 0; j < lengArr; j++) {
+        if (data[k][j] == turnCheck) {
+          countRow++;
+        } else if (data[k][j] == turn && countRow < sizeWin) {
+          countRow = 0;
+        }
+      }
+      dataWin.row[k] = countRow;
+      // check col
+      let countCol = 0;
+      for (let j = 0; j < lengArr; j++) {
+        if (data[j][k] == turnCheck) {
+          countCol++;
+        } else if (data[j][k] == turn && countCol < sizeWin) {
+          countCol = 0;
+        }
+      }
+      dataWin.col[k] = countCol;
     }
-  useEffect(() => {
-    const turnCheck = turn == "x" ? "o" : "x"
 
-   
+    return dataWin;
+  };
+  useEffect(() => {
+    const turnCheck = turn == "x" ? "o" : "x";
+
     const dataSplit = data.reduce((all, one, i) => {
       const ch = Math.floor(i / size);
       all[ch] = [].concat(all[ch] || [], one);
       return all;
     }, []);
-    console.log("dataSplit:", dataSplit.toString());
-    const datacheckWin = checkWin(dataSplit,turnCheck);
-    const findCol = datacheckWin.col.find((e) => e >= sizeWin)
-    const findRow = datacheckWin.row.find((e) => e >= sizeWin)
+    const datacheckWin = checkWin(dataSplit, turnCheck);
+    const findCol = datacheckWin.col.find((e) => e >= sizeWin);
+    const findRow = datacheckWin.row.find((e) => e >= sizeWin);
     if (
       datacheckWin.diagonal >= sizeWin ||
-      datacheckWin.diagonal2 >= sizeWin || findRow || findCol) {
-      alert('done')
+      datacheckWin.diagonal2 >= sizeWin ||
+      findRow ||
+      findCol
+    ) {
+      alert("done");
     }
-    console.log(`datacheckWin ${turnCheck}:`, datacheckWin)
   }, [data]);
 
   const ItemPressed = (e, i) => {
@@ -122,14 +123,18 @@ export default function App() {
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <View style={{ position: "absolute", top: 100, alignItems: "center" }}>
-        <CBN_InCrease data={size} setData={(e) => setSize(e)} label='size' />
+        <CBN_InCrease data={size} setData={(e) => setSize(e)} label="size" />
 
-        <CBN_InCrease data={sizeWin} setData={(e) => setSizeWin(e)} label='sizeWin' />
+        <CBN_InCrease
+          data={sizeWin}
+          setData={(e) => setSizeWin(e)}
+          label="sizeWin"
+        />
 
-       <View style={{flexDirection:'row'}}>
-       <Text style={{width:100}}>Turn:</Text>
-       <Text style={{width:100}}>{turn}</Text>
-       </View>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={{ width: 100 }}>Turn:</Text>
+          <Text style={{ width: 100 }}>{turn}</Text>
+        </View>
         <TouchableOpacity style={styles.buttonIn} onPress={() => loadData()}>
           <Text>Clear</Text>
         </TouchableOpacity>
@@ -156,9 +161,9 @@ export default function App() {
   );
 }
 
-const CBN_InCrease = ({ data = 0, setData = () => { }, label = 'label' }) => {
+const CBN_InCrease = ({ data = 0, setData = () => {}, label = "label" }) => {
   return (
-    <View style={{ flexDirection: "row", alignItems: 'center' }}>
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
       <Text style={{ width: 100 }}>{label}:</Text>
       <TouchableOpacity
         style={styles.buttonIn}
@@ -176,8 +181,8 @@ const CBN_InCrease = ({ data = 0, setData = () => { }, label = 'label' }) => {
         <Text>+</Text>
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   buttonIn: {
     padding: marginItem,
