@@ -26,6 +26,11 @@ function App({ navigation }) {
       }}>
         <Text style={styles.txt}>Animation Login</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.btna} onPress={() => {
+        navigation.navigate('Game')
+      }}>
+        <Text style={styles.txt}>Game</Text>
+      </TouchableOpacity>
     </View>
   );
 }

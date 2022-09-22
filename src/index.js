@@ -9,6 +9,7 @@ import Animation_1 from './views/Animation_1';
 import Home from './views/Home';
 import Animation_Tabbar from './views/Animation_Tabbar';
 import Login from './views/Animation_Login';
+import Game from './views/Game';
 // import AR from './views/AR';
 
 const Stack = createNativeStackNavigator();
@@ -23,6 +24,7 @@ function App() {
                 {/* <Stack.Screen name="AR" component={AR} options={options} /> */}
 
                 <Stack.Screen name="Login" component={Login} options={options} />
+                <Stack.Screen name="Game" component={Game} options={options} />
 
             </Stack.Navigator>
         </NavigationContainer>
