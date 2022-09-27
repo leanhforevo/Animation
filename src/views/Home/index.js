@@ -16,11 +16,11 @@ function App({ navigation }) {
       }}>
         <Text style={styles.txt}>Animation Tabbar</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.btna} onPress={() => {
+      {/* <TouchableOpacity style={styles.btna} onPress={() => {
         navigation.navigate('AR')
       }}>
         <Text style={styles.txt}>AR</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity style={styles.btna} onPress={() => {
         navigation.navigate('Login')
       }}>
@@ -30,6 +30,11 @@ function App({ navigation }) {
         navigation.navigate('Game')
       }}>
         <Text style={styles.txt}>Game</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.btna} onPress={() => {
+        navigation.navigate('StickieHeader')
+      }}>
+        <Text style={styles.txt}>StickieHeader</Text>
       </TouchableOpacity>
     </View>
   );

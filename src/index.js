@@ -10,6 +10,8 @@ import Home from './views/Home';
 import Animation_Tabbar from './views/Animation_Tabbar';
 import Login from './views/Animation_Login';
 import Game from './views/Game';
+import StickieHeader from './views/StickieHeader';
+import Draft from './views/Draft';
 // import AR from './views/AR';
 
 const Stack = createNativeStackNavigator();
@@ -25,7 +27,8 @@ function App() {
 
                 <Stack.Screen name="Login" component={Login} options={options} />
                 <Stack.Screen name="Game" component={Game} options={options} />
-
+                <Stack.Screen name="StickieHeader" component={StickieHeader} options={options} />
+                <Stack.Screen name="Draft" component={Draft} options={options} />
             </Stack.Navigator>
         </NavigationContainer>
     );
