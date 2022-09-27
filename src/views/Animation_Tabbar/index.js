@@ -15,7 +15,7 @@ import Animated, {
   interpolate,
 } from "react-native-reanimated";
 import AntDesign from "@expo/vector-icons/AntDesign";
-
+import IconLottie from './Icon-Lottie'
 const { width } = Dimensions.get("window");
 
 const height = 64;
@@ -58,14 +58,14 @@ const Test = () => {
 
     const animatedOpacity = interpolate(DotPosition.value, [0, 100], [1, 0]);
     return {
-      opacity: withTiming(animatedOpacity, configAnimation),
+      // opacity: withTiming(animatedOpacity, configAnimation),
       transform: [
         {
           translateX: withTiming(animatedValueX, configAnimation),
         },
-        {
-          translateY: withTiming(DotPosition.value, configAnimation),
-        },
+        // {
+        //   translateY: withTiming(DotPosition.value, configAnimation),
+        // },
       ],
     };
   });
@@ -106,14 +106,16 @@ const Test = () => {
     };
   });
 
-  const iconTab = ["home", "barschart", "staro", "mail", "bars"];
+  const iconTab = ["bell", "bookmark", "email", "eye", "wifi"];
   return (
     <View style={{ flex: 1, backgroundColor: "rgb(96,208,225)" }}>
       <View style={{ flex: 1 }} />
+      {/* <IconLottie/> */}
       <View style={{}}>
         <View style={{ height }}>
           <Animated.View style={[styles.circalButton, Dot_Animation]}>
-            <AntDesign name={iconTab[tabSelected]} size={24} color="black" />
+            {/* <AntDesign name={iconTab[tabSelected]} size={24} color="black" /> */}
+            <IconLottie icon={iconTab[tabSelected]} isActive={true} />
           </Animated.View>
 
           <Animated.View
@@ -177,7 +179,8 @@ const Test = () => {
                       Icon_Animation(index),
                     ]}
                   >
-                    <AntDesign name={iconTab[index]} size={24} color="black" />
+                    {/* <AntDesign name={iconTab[index]} size={24} color="black" /> */}
+                    <IconLottie icon={iconTab[index]} isActive={index == tabSelected} />
                   </Animated.View>
                 </TouchableOpacity>
               );
